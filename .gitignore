@@ -9,10 +9,6 @@
 # Helpers
 /application/helpers/mpdf/ttfontdata/*
 
-# Language
-/application/language
-!/application/language/english
-
 # Templates
 /application/views/invoice_templates/pdf/
 !/application/views/invoice_templates/pdf/InvoicePlane*
