@@ -27,6 +27,9 @@
 /vendor/
 composer.lock
 
+# MySQL
+/mysql/
+
 /.htaccess
 .idea
 .sass-cache

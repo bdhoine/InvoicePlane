@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  app:
+    build: .
+    links:
+    - db
+    ports:
+    - 80:80
+    volumes:
+    - ./application:/var/www/html/application
+    - ./assets:/var/www/html/assets
+    - ./system:/var/www/html/system
+    - ./uploads:/var/www/html/uploads
+    - ./vendor:/var/www/html/vendor
+    - ./htaccess:/var/www/html/.htaccess
+    - ./index.php:/var/www/html/index.php
+    - ./robots.txt:/var/www/html/robots.txt
+  db:
+    environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_DATABASE=invoiceplane
+    - MYSQL_USER=invoiceplane
+    - MYSQL_PASSWORD=invoiceplane
+    image: mysql
+    volumes:
+    - ./mysql/data:/var/lib/mysql
+    - ./mysql/scripts:/root/mysql
