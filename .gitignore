@@ -23,8 +23,9 @@
 /vendor/
 composer.lock
 
-# MySQL
-/mysql/
+# MySQL Docker volume
+/mysql/data
+/mysql/*/invoiceplane.sql
 
 /.htaccess
 .idea
