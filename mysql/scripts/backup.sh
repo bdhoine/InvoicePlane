@@ -2,6 +2,6 @@
 
 . config
 
-mysqldump --create-options --add-drop-database -u${USER} -p${PASSWORD} --databases "${DATABASE}" > "${DATABASE}.sql"
+mysqldump --create-options -u${USER} -p${PASSWORD} "${DATABASE}" "${INITIAL_TABLES//ip_/--ignore_table=${DATABASE}.ip_}" > "${DATABASE}.sql"
 
 exit 0
