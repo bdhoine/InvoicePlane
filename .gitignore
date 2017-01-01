@@ -32,3 +32,4 @@ composer.lock
 .sass-cache
 adminer.php
 /nbproject/
+/deploy.sh
