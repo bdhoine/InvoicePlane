@@ -16,6 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `ip_custom_fields`
+--
+
+DROP TABLE IF EXISTS `ip_custom_fields`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ip_custom_fields` (
+  `custom_field_id` int(11) NOT NULL AUTO_INCREMENT,
+  `custom_field_table` varchar(255) DEFAULT NULL,
+  `custom_field_label` text,
+  `custom_field_column` text,
+  PRIMARY KEY (`custom_field_id`),
+  KEY `custom_field_table` (`custom_field_table`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ip_custom_fields`
+--
+
+LOCK TABLES `ip_custom_fields` WRITE;
+/*!40000 ALTER TABLE `ip_custom_fields` DISABLE KEYS */;
+INSERT INTO `ip_custom_fields` VALUES (1,'ip_user_custom','Rekeningnummer','user_custom_rekeningnummer');
+/*!40000 ALTER TABLE `ip_custom_fields` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `ip_invoice_groups`
 --
 
@@ -40,7 +67,7 @@ CREATE TABLE `ip_invoice_groups` (
 
 LOCK TABLES `ip_invoice_groups` WRITE;
 /*!40000 ALTER TABLE `ip_invoice_groups` DISABLE KEYS */;
-INSERT INTO `ip_invoice_groups` VALUES (3,'Facturen','FA-{{{year}}}-{{{month}}}-{{{id}}}',1,2),(4,'Offertes','OF-{{{year}}}-{{{month}}}-{{{id}}}',1,2);
+INSERT INTO `ip_invoice_groups` VALUES (3,'Facturen','FA-{{{year}}}-{{{month}}}-{{{id}}}',2,2),(4,'Offertes','OF-{{{year}}}-{{{month}}}-{{{id}}}',1,2);
 /*!40000 ALTER TABLE `ip_invoice_groups` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,7 +117,7 @@ CREATE TABLE `ip_settings` (
 
 LOCK TABLES `ip_settings` WRITE;
 /*!40000 ALTER TABLE `ip_settings` DISABLE KEYS */;
-INSERT INTO `ip_settings` VALUES (19,'default_language','dutch'),(20,'date_format','d/m/Y'),(21,'currency_symbol','€'),(22,'currency_symbol_placement','before'),(23,'currency_code','EUR'),(24,'invoices_due_after','30'),(25,'quotes_expire_after','8'),(26,'default_invoice_group','3'),(27,'default_quote_group','4'),(28,'thousands_separator','.'),(29,'decimal_point',','),(30,'cron_key','ntmdwZoqjUZkN0Y9'),(31,'tax_rate_decimal_places','2'),(32,'pdf_invoice_template','InvoicePlane'),(33,'pdf_invoice_template_paid','InvoicePlane - paid'),(34,'pdf_invoice_template_overdue','InvoicePlane - overdue'),(35,'pdf_quote_template','InvoicePlane'),(36,'public_invoice_template','InvoicePlane_Web'),(37,'public_quote_template','InvoicePlane_Web'),(38,'disable_sidebar','1'),(39,'read_only_toggle','4'),(40,'invoice_pre_password',''),(41,'quote_pre_password',''),(42,'email_pdf_attachment','1'),(43,'generate_invoice_number_for_draft','0'),(44,'generate_quote_number_for_draft','0'),(45,'first_day_of_week','1'),(46,'default_country','BE'),(47,'default_list_limit','15'),(48,'quote_overview_period','this-month'),(49,'invoice_overview_period','this-month'),(50,'disable_quickactions','0'),(51,'custom_title','Byteshark'),(52,'monospace_amounts','0'),(53,'bcc_mails_to_admin','0'),(54,'default_invoice_terms',''),(55,'invoice_default_payment_method','3'),(56,'mark_invoices_sent_pdf','0'),(57,'include_zugferd','1'),(58,'email_invoice_template',''),(59,'email_invoice_template_paid',''),(60,'email_invoice_template_overdue',''),(61,'pdf_invoice_footer',''),(62,'automatic_email_on_recur','0'),(63,'mark_quotes_sent_pdf','0'),(64,'default_quote_notes',''),(65,'email_quote_template',''),(66,'default_invoice_tax_rate','1'),(67,'default_include_item_tax','0'),(68,'default_item_tax_rate','1'),(69,'email_send_method','phpmail'),(70,'smtp_server_address',''),(71,'smtp_authentication','0'),(72,'smtp_username',''),(73,'smtp_port',''),(74,'smtp_security',''),(75,'merchant_enabled','0'),(76,'merchant_driver',''),(77,'merchant_test_mode','0'),(78,'merchant_username',''),(79,'merchant_signature',''),(80,'merchant_currency_code',''),(81,'online_payment_method',''),(82,'login_logo','logo.png'),(83,'invoice_logo','logo1.png');
+INSERT INTO `ip_settings` VALUES (19,'default_language','dutch'),(20,'date_format','d/m/Y'),(21,'currency_symbol','€'),(22,'currency_symbol_placement','before'),(23,'currency_code','EUR'),(24,'invoices_due_after','30'),(25,'quotes_expire_after','8'),(26,'default_invoice_group','3'),(27,'default_quote_group','4'),(28,'thousands_separator','.'),(29,'decimal_point',','),(30,'cron_key','ntmdwZoqjUZkN0Y9'),(31,'tax_rate_decimal_places','2'),(32,'pdf_invoice_template','Byteshark'),(33,'pdf_invoice_template_paid','InvoicePlane - paid'),(34,'pdf_invoice_template_overdue','InvoicePlane - overdue'),(35,'pdf_quote_template','InvoicePlane'),(36,'public_invoice_template','Byteshark'),(37,'public_quote_template','InvoicePlane_Web'),(38,'disable_sidebar','1'),(39,'read_only_toggle','4'),(40,'invoice_pre_password',''),(41,'quote_pre_password',''),(42,'email_pdf_attachment','1'),(43,'generate_invoice_number_for_draft','0'),(44,'generate_quote_number_for_draft','0'),(45,'first_day_of_week','1'),(46,'default_country','BE'),(47,'default_list_limit','15'),(48,'quote_overview_period','this-month'),(49,'invoice_overview_period','this-month'),(50,'disable_quickactions','0'),(51,'custom_title','Byteshark'),(52,'monospace_amounts','0'),(53,'bcc_mails_to_admin','0'),(54,'default_invoice_terms',''),(55,'invoice_default_payment_method','3'),(56,'mark_invoices_sent_pdf','0'),(57,'include_zugferd','1'),(58,'email_invoice_template',''),(59,'email_invoice_template_paid',''),(60,'email_invoice_template_overdue',''),(61,'pdf_invoice_footer',''),(62,'automatic_email_on_recur','0'),(63,'mark_quotes_sent_pdf','0'),(64,'default_quote_notes',''),(65,'email_quote_template',''),(66,'default_invoice_tax_rate',''),(67,'default_include_item_tax',''),(68,'default_item_tax_rate','1'),(69,'email_send_method','phpmail'),(70,'smtp_server_address',''),(71,'smtp_authentication','0'),(72,'smtp_username',''),(73,'smtp_port',''),(74,'smtp_security',''),(75,'merchant_enabled','0'),(76,'merchant_driver',''),(77,'merchant_test_mode','0'),(78,'merchant_username',''),(79,'merchant_signature',''),(80,'merchant_currency_code',''),(81,'online_payment_method',''),(82,'login_logo','logo.png'),(83,'invoice_logo','logo.png');
 /*!40000 ALTER TABLE `ip_settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -129,6 +156,7 @@ DROP TABLE IF EXISTS `ip_user_custom`;
 CREATE TABLE `ip_user_custom` (
   `user_custom_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
+  `user_custom_rekeningnummer` varchar(2000) NOT NULL,
   PRIMARY KEY (`user_custom_id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -140,7 +168,7 @@ CREATE TABLE `ip_user_custom` (
 
 LOCK TABLES `ip_user_custom` WRITE;
 /*!40000 ALTER TABLE `ip_user_custom` DISABLE KEYS */;
-INSERT INTO `ip_user_custom` VALUES (1,1);
+INSERT INTO `ip_user_custom` VALUES (1,1,'BE26 0018 0437 7529');
 /*!40000 ALTER TABLE `ip_user_custom` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,7 +213,7 @@ CREATE TABLE `ip_users` (
 
 LOCK TABLES `ip_users` WRITE;
 /*!40000 ALTER TABLE `ip_users` DISABLE KEYS */;
-INSERT INTO `ip_users` VALUES (1,1,1,'2016-12-27 22:37:53','2016-12-28 11:06:40','Barry d\'Hoine','Byteshark','Brusselsesteenweg 99/0006','','Zemst','Vlaams-Brabant','1980','BE','+32 494 61 68 95','','','barry@byteshark.be','$2a$10$59fdadc0fd7a50a1dbc47OXo9FESJTlU3UuVtV.0eNxmR0bMcRavu','https://byteshark.be','BE 0655.846.593','','59fdadc0fd7a50a1dbc47b','');
+INSERT INTO `ip_users` VALUES (1,1,1,'2016-12-27 22:37:53','2017-01-01 22:40:12','Barry d\'Hoine','Byteshark','Brusselsesteenweg 99/0006','','Zemst','Vlaams-Brabant','1980','BE','+32 494 61 68 95','','','barry@byteshark.be','$2a$10$59fdadc0fd7a50a1dbc47OXo9FESJTlU3UuVtV.0eNxmR0bMcRavu','https://byteshark.be','BE 0655.846.593','','59fdadc0fd7a50a1dbc47b','');
 /*!40000 ALTER TABLE `ip_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -225,4 +253,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-01 20:21:36
+-- Dump completed on 2017-01-02  2:07:47

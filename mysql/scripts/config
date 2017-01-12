@@ -1,4 +1,4 @@
 DATABASE="invoiceplane"
 USER="root"
 PASSWORD="root"
-INITIAL_TABLES="ip_invoice_groups ip_payment_methods ip_settings ip_tax_rates ip_user_custom ip_users ip_versions"
+INITIAL_TABLES="ip_custom_fields ip_invoice_groups ip_payment_methods ip_settings ip_tax_rates ip_user_custom ip_users ip_versions"
