@@ -64,28 +64,26 @@
             <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-5">
 
-                    <h4><?php echo $invoice->user_name; ?></h4>
-                    <p><?php if ($invoice->user_vat_id) {
-                            echo lang("vat_id_short") . ": " . $invoice->user_vat_id . '<br>';
-                        } ?>
-                        <?php if ($invoice->user_tax_code) {
-                            echo lang("tax_code_short") . ": " . $invoice->user_tax_code . '<br>';
-                        } ?>
-                        <?php if ($invoice->user_address_1) {
+                    <h4><?php echo $invoice->user_company; ?></h4>
+                    <p> <?php if ($invoice->user_address_1) {
                             echo $invoice->user_address_1 . '<br>';
                         } ?>
                         <?php if ($invoice->user_address_2) {
                             echo $invoice->user_address_2 . '<br>';
                         } ?>
-                        <?php if ($invoice->user_city) {
-                            echo $invoice->user_city . ' ';
-                        } ?>
-                        <?php if ($invoice->user_state) {
-                            echo $invoice->user_state . ' ';
-                        } ?>
                         <?php if ($invoice->user_zip) {
-                            echo $invoice->user_zip . '<br>';
+                            echo $invoice->user_zip . ' ';
                         } ?>
+                        <?php if ($invoice->user_city) {
+                            echo $invoice->user_city . '<br>';
+                        } ?>
+                        <?php if ($invoice->user_vat_id) {
+                            echo lang("vat_id_short") . ": " . $invoice->user_vat_id . '<br>';
+                        } ?>
+                        <?php if ($invoice->user_tax_code) {
+                            echo lang("tax_code_short") . ": " . $invoice->user_tax_code . '<br>';
+                        } ?>
+                        <?php echo '<div><a href="mailto:' . $invoice->user_email . '">' . $invoice->user_email . '</a></div>'; ?>
                         <?php if ($invoice->user_phone) { ?><?php echo trans('phone_abbr'); ?>: <?php echo $invoice->user_phone; ?>
                             <br><?php } ?>
                         <?php if ($invoice->user_fax) { ?><?php echo trans('fax_abbr'); ?>: <?php echo $invoice->user_fax; ?><?php } ?>
@@ -96,26 +94,23 @@
                 <div class="col-xs-12 col-md-6 col-lg-5 text-right">
 
                     <h4><?php echo $invoice->client_name; ?></h4>
-                    <p><?php if ($invoice->client_vat_id) {
-                            echo lang("vat_id_short") . ": " . $invoice->client_vat_id . '<br>';
-                        } ?>
-                        <?php if ($invoice->client_tax_code) {
-                            echo lang("tax_code_short") . ": " . $invoice->client_tax_code . '<br>';
-                        } ?>
-                        <?php if ($invoice->client_address_1) {
+                    <p><?php if ($invoice->client_address_1) {
                             echo $invoice->client_address_1 . '<br>';
                         } ?>
                         <?php if ($invoice->client_address_2) {
                             echo $invoice->client_address_2 . '<br>';
                         } ?>
-                        <?php if ($invoice->client_city) {
-                            echo $invoice->client_city . ' ';
-                        } ?>
-                        <?php if ($invoice->client_state) {
-                            echo $invoice->client_state . ' ';
-                        } ?>
                         <?php if ($invoice->client_zip) {
-                            echo $invoice->client_zip . '<br>';
+                            echo $invoice->client_zip . ' ';
+                        } ?>
+                        <?php if ($invoice->client_city) {
+                            echo $invoice->client_city . '<br>';
+                        } ?>
+                        <?php if ($invoice->client_vat_id) {
+                            echo lang("vat_id_short") . ": " . $invoice->client_vat_id . '<br>';
+                        } ?>
+                        <?php if ($invoice->client_tax_code) {
+                            echo lang("tax_code_short") . ": " . $invoice->client_tax_code . '<br>';
                         } ?>
                         <?php if ($invoice->client_phone) {
                             echo trans('phone_abbr') . ': ' . $invoice->client_phone; ?>
@@ -125,7 +120,7 @@
 
                     <br>
 
-                    <table class="table table-condensed">
+                    <table class="table table-condensed table-no-border">
                         <tbody>
                         <tr>
                             <td><?php echo trans('invoice_date'); ?></td>
@@ -141,12 +136,6 @@
                             <td><?php echo trans('amount_due'); ?></td>
                             <td style="text-align:right;"><?php echo format_currency($invoice->invoice_balance); ?></td>
                         </tr>
-                        <?php if ($payment_method): ?>
-                            <tr>
-                                <td><?php echo trans('payment_method') . ': '; ?></td>
-                                <td><?php echo $payment_method->payment_method_name; ?></td>
-                            </tr>
-                        <?php endif; ?>
                         </tbody>
                     </table>
 
@@ -161,33 +150,34 @@
                         <thead>
                         <tr>
                             <th><?php echo trans('item'); ?></th>
-                            <th><?php echo trans('description'); ?></th>
                             <th class="text-right"><?php echo trans('qty'); ?></th>
                             <th class="text-right"><?php echo trans('price'); ?></th>
-                            <th class="text-right"><?php echo trans('discount'); ?></th>
+                            <th class="text-right"><?php echo trans('tax'); ?></th>
                             <th class="text-right"><?php echo trans('total'); ?></th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php foreach ($items as $item) : ?>
                             <tr>
-                                <td><?php echo $item->item_name; ?></td>
-                                <td><?php echo nl2br($item->item_description); ?></td>
+                                <td>
+                                    <?php echo $item->item_name; ?></br>
+                                    <span class="item-description"><?php echo nl2br($item->item_description); ?></span>
+                                </td>
                                 <td class="amount"><?php echo format_amount($item->item_quantity); ?></td>
                                 <td class="amount"><?php echo format_currency($item->item_price); ?></td>
-                                <td class="amount"><?php echo format_currency($item->item_discount); ?></td>
-                                <td class="amount"><?php echo format_currency($item->item_subtotal); ?></td>
+                                <td class="amount"><?php echo format_currency($item->item_tax_total); ?></td>
+                                <td class="amount"><?php echo format_currency($item->item_total); ?></td>
                             </tr>
                         <?php endforeach ?>
                         <tr>
-                            <td colspan="4"></td>
+                            <td colspan="3"></td>
                             <td class="text-right"><?php echo trans('subtotal'); ?>:</td>
-                            <td class="amount"><?php echo format_currency($invoice->invoice_item_total); ?></td>
+                            <td class="amount"><?php echo format_currency($invoice->invoice_item_subtotal); ?></td>
                         </tr>
 
                         <?php if ($invoice->invoice_item_tax_total > 0) { ?>
                             <tr>
-                                <td class="no-bottom-border" colspan="4"></td>
+                                <td class="no-bottom-border" colspan="3"></td>
                                 <td class="text-right"><?php echo trans('item_tax'); ?></td>
                                 <td class="amount"><?php echo format_currency($invoice->invoice_item_tax_total); ?></td>
                             </tr>
@@ -195,7 +185,7 @@
 
                         <?php foreach ($invoice_tax_rates as $invoice_tax_rate) : ?>
                             <tr>
-                                <td class="no-bottom-border" colspan="4"></td>
+                                <td class="no-bottom-border" colspan="3"></td>
                                 <td class="text-right">
                                     <?php echo $invoice_tax_rate->invoice_tax_rate_name . ' ' . format_amount($invoice_tax_rate->invoice_tax_rate_percent); ?>
                                     %
@@ -204,38 +194,34 @@
                             </tr>
                         <?php endforeach ?>
 
+                        <?php if ($invoice->invoice_discount_percent > 0): ?>
                         <tr>
-                            <td class="no-bottom-border" colspan="4"></td>
+                            <td class="no-bottom-border" colspan="3"></td>
                             <td class="text-right"><?php echo trans('discount'); ?>:</td>
-                            <td class="amount">
-                                <?php
-                                if ($invoice->invoice_discount_percent > 0) {
-                                    echo format_amount($invoice->invoice_discount_percent) . ' %';
-                                } else {
-                                    echo format_amount($invoice->invoice_discount_amount);
-                                }
-                                ?>
-                            </td>
+                            <td class="amount"><?php echo format_amount($invoice->invoice_discount_percent) . ' %'; ?></td>
                         </tr>
+                        <?php endif ?>
 
                         <tr>
-                            <td class="no-bottom-border" colspan="4"></td>
+                            <td class="no-bottom-border" colspan="3"></td>
                             <td class="text-right"><?php echo trans('total'); ?>:</td>
                             <td class="amount"><?php echo format_currency($invoice->invoice_total); ?></td>
                         </tr>
 
+                        <?php if ($invoice->invoice_paid > 0): ?>
                         <tr>
-                            <td class="no-bottom-border" colspan="4"></td>
+                            <td class="no-bottom-border" colspan="3"></td>
                             <td class="text-right"><?php echo trans('paid'); ?></td>
                             <td class="amount"><?php echo format_currency($invoice->invoice_paid) ?></td>
                         </tr>
                         <tr class="<?php echo ($invoice->invoice_balance > 0) ? 'overdue' : 'text-success'; ?>">
-                            <td class="no-bottom-border" colspan="4"></td>
+                            <td class="no-bottom-border" colspan="3"></td>
                             <td class="text-right"><?php echo trans('balance'); ?></td>
                             <td class="amount">
                                 <b><?php echo format_currency($invoice->invoice_balance) ?></b>
                             </td>
                         </tr>
+                        <?php endif ?>
                         </tbody>
                     </table>
                 </div>

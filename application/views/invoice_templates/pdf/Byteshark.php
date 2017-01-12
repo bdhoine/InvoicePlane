@@ -1,9 +1,10 @@
 <html lang="<?php echo trans('cldr'); ?>">
 <head>
     <meta charset="utf-8">
-    <title><?php echo trans('invoice'); ?></title>
+    <title><?php echo trans('invoice') . ' ' . $invoice->invoice_number;  ?></title>
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/default/css/templates.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/default/css/custom-pdf.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/default/css/custom-pdf-byteshark.css">
 </head>
 <body>
 <header class="clearfix">
@@ -14,36 +15,34 @@
 
     <div id="client">
         <div>
-            <b><?php echo $invoice->client_name; ?></b>
+            <?php echo $invoice->client_name; ?>
         </div>
-        <?php if ($invoice->client_vat_id) {
-            echo '<div>' . trans('vat_id_short') . ': ' . $invoice->client_vat_id . '</div>';
-        }
-        if ($invoice->client_tax_code) {
-            echo '<div>' . trans('tax_code_short') . ': ' . $invoice->client_tax_code . '</div>';
-        }
-        if ($invoice->client_address_1) {
+        <?php if ($invoice->client_address_1) {
             echo '<div>' . $invoice->client_address_1 . '</div>';
         }
         if ($invoice->client_address_2) {
             echo '<div>' . $invoice->client_address_2 . '</div>';
         }
         if ($invoice->client_city && $invoice->client_zip) {
-            echo '<div>' . $invoice->client_city . ' ' . $invoice->client_zip . '</div>';
+            echo '<div>' . $invoice->client_zip . ' ' . $invoice->client_city . '</div>';
         } else {
-            if ($invoice->client_city) {
-                echo '<div>' . $invoice->client_city . '</div>';
-            }
             if ($invoice->client_zip) {
                 echo '<div>' . $invoice->client_zip . '</div>';
             }
+            if ($invoice->client_city) {
+                echo '<div>' . $invoice->client_city . '</div>';
+            }
         }
-        if ($invoice->client_state) {
-            echo '<div>' . $invoice->client_state . '</div>';
-        }
-        if ($invoice->client_country) {
+        if ($invoice->client_country && $invoice->client_country != 'BE') {
             echo '<div>' . get_country_name(trans('cldr'), $invoice->client_country) . '</div>';
         }
+        if ($invoice->client_vat_id) {
+            echo '<div>' . trans('vat_id_short') . ': ' . $invoice->client_vat_id . '</div>';
+        }
+        if ($invoice->client_tax_code) {
+            echo '<div>' . trans('tax_code_short') . ': ' . $invoice->client_tax_code . '</div>';
+        }
+
 
         echo '<br/>';
 
@@ -53,38 +52,39 @@
 
     </div>
     <div id="company">
-        <div><b><?php echo $invoice->user_name; ?></b></div>
-        <?php if ($invoice->user_vat_id) {
-            echo '<div>' . trans('vat_id_short') . ': ' . $invoice->user_vat_id . '</div>';
-        }
-        if ($invoice->user_tax_code) {
-            echo '<div>' . trans('tax_code_short') . ': ' . $invoice->user_tax_code . '</div>';
-        }
-        if ($invoice->user_address_1) {
+        <div><?php echo $invoice->user_company; ?></div>
+        <?php if ($invoice->user_address_1) {
             echo '<div>' . $invoice->user_address_1 . '</div>';
         }
         if ($invoice->user_address_2) {
             echo '<div>' . $invoice->user_address_2 . '</div>';
         }
         if ($invoice->user_city && $invoice->user_zip) {
-            echo '<div>' . $invoice->user_city . ' ' . $invoice->user_zip . '</div>';
+            echo '<div>' . $invoice->user_zip . ' ' . $invoice->user_city . '</div>';
         } else {
-            if ($invoice->user_city) {
-                echo '<div>' . $invoice->user_city . '</div>';
-            }
             if ($invoice->user_zip) {
                 echo '<div>' . $invoice->user_zip . '</div>';
             }
+            if ($invoice->user_city) {
+                echo '<div>' . $invoice->user_city . '</div>';
+            }
         }
-        if ($invoice->user_state) {
-            echo '<div>' . $invoice->user_state . '</div>';
-        }
-        if ($invoice->user_country) {
+        if ($invoice->user_country && $invoice->client_country != 'BE') {
             echo '<div>' . get_country_name(trans('cldr'), $invoice->user_country) . '</div>';
+        }
+        if ($invoice->user_vat_id) {
+            echo '<div>' . trans('vat_id_short') . ': ' . $invoice->user_vat_id . '</div>';
+        }
+        if ($invoice->user_tax_code) {
+            echo '<div>' . trans('tax_code_short') . ': ' . $invoice->user_tax_code . '</div>';
+        }
+        if ($invoice->user_custom_rekeningnummer) {
+            echo '<div>' . $invoice->user_custom_rekeningnummer . '</div>';
         }
 
         echo '<br/>';
 
+        echo '<div>' . $invoice->user_email . '</div>';
         if ($invoice->user_phone) {
             echo '<div>' . trans('phone_abbr') . ': ' . $invoice->user_phone . '</div>';
         }
@@ -112,12 +112,6 @@
                 <td><?php echo trans('amount_due') . ': '; ?></td>
                 <td><?php echo format_currency($invoice->invoice_balance); ?></td>
             </tr>
-            <?php if ($payment_method): ?>
-                <tr>
-                    <td><?php echo trans('payment_method') . ': '; ?></td>
-                    <td><?php echo $payment_method->payment_method_name; ?></td>
-                </tr>
-            <?php endif; ?>
         </table>
     </div>
 
@@ -127,9 +121,9 @@
         <thead>
         <tr>
             <th class="item-name"><?php echo trans('item'); ?></th>
-            <th class="item-desc"><?php echo trans('description'); ?></th>
             <th class="item-amount text-right"><?php echo trans('qty'); ?></th>
             <th class="item-price text-right"><?php echo trans('price'); ?></th>
+            <th class="item-tax text-right"><?php echo trans('tax'); ?></th>
             <?php if ($show_discounts) : ?>
                 <th class="item-discount text-right"><?php echo trans('discount'); ?></th>
             <?php endif; ?>
@@ -141,13 +135,18 @@
         <?php
         foreach ($items as $item) { ?>
             <tr>
-                <td><?php echo $item->item_name; ?></td>
-                <td><?php echo nl2br($item->item_description); ?></td>
+                <td>
+                    <?php echo $item->item_name; ?><br/>
+                    <span class="item-description"><?php echo nl2br($item->item_description); ?></span>
+                </td>
                 <td class="text-right">
                     <?php echo format_amount($item->item_quantity); ?>
                 </td>
                 <td class="text-right">
                     <?php echo format_currency($item->item_price); ?>
+                </td>
+                <td class="text-right">
+                    <?php echo format_currency($item->item_tax_total); ?>
                 </td>
                 <?php if ($show_discounts) : ?>
                     <td class="text-right">
@@ -184,7 +183,7 @@
         <?php foreach ($invoice_tax_rates as $invoice_tax_rate) : ?>
             <tr>
                 <td <?php echo($show_discounts ? 'colspan="5"' : 'colspan="4"'); ?> class="text-right">
-                    <?php echo $invoice_tax_rate->invoice_tax_rate_name . ' (' . format_amount($invoice_tax_rate->invoice_tax_rate_percent) . '%)'; ?>
+                    <?php echo trans('tax') . ' ' . format_amount($invoice_tax_rate->invoice_tax_rate_percent) . '%'; ?>
                 </td>
                 <td class="text-right">
                     <?php echo format_currency($invoice_tax_rate->invoice_tax_rate_amount); ?>
@@ -200,6 +199,7 @@
                 <b><?php echo format_currency($invoice->invoice_total); ?></b>
             </td>
         </tr>
+        <?php if ($invoice->invoice_paid > 0): ?>
         <tr>
             <td <?php echo($show_discounts ? 'colspan="5"' : 'colspan="4"'); ?> class="text-right">
                 <?php echo trans('paid'); ?>
@@ -216,6 +216,7 @@
                 <b><?php echo format_currency($invoice->invoice_balance); ?></b>
             </td>
         </tr>
+        <?php endif?>
         </tbody>
     </table>
 

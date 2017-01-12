@@ -4,3 +4,11 @@
 
    All changes made in this file will override the default styles.
    ========================================================================== */
+
+.table-no-border > tbody > tr > td {
+  border: 0px;
+}
+
+.item-description {
+  font-style: italic;
+}
